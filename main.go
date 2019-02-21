@@ -12,6 +12,9 @@ type ErrParty struct {
 
 // RSVP add a partier to the party
 func (p *ErrParty) RSVP(partier func() error) {
+	if p.errChan == nil {
+		p.errChan = make(chan error)
+	}
 	p.wg.Add(1)
 	go func(ch chan error, w *sync.WaitGroup) {
 		defer w.Done()
